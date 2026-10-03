@@ -3,7 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from common import PROJECTS_FOLDER, Colors, print_format
+from lib.common import PROJECTS_FOLDER, Colors, print_format
 
 
 def find_project(directory: str) -> Path:
