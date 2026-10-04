@@ -1,0 +1,20 @@
+[project]
+name = "zedio"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "lucaaszsx", email = "jlucasmelob558@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "inquirerpy>=0.3.4",
+    "pyserial>=3.5",
+]
+
+[project.scripts]
+zedio = "zedio.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.8.0,<0.10.0"]
+build-backend = "uv_build"

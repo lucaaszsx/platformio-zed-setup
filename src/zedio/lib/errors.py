@@ -1,0 +1,2 @@
+class PioError(Exception):
+    pass

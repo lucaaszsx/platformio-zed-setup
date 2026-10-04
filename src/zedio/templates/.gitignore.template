@@ -1,0 +1,20 @@
+# Python
+__pycache__
+*.pyc
+.venv/
+.ruff_cache/
+
+# PlatformIO
+.pio/
+compile_commands.json
+sdkconfig.*
+!sdkconfig.defaults
+
+# Environment
+.env*
+!.env.example
+secrets.h
+!secrets.example.h
+
+# Cache files
+.cache
