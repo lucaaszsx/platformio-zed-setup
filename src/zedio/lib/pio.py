@@ -2,7 +2,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from zedio.lib.errors import PioError
+from zedio.lib.errors import PioError, PioProjectNotFoundError
 from zedio.templates.template_map import template_dest_path
 
 
@@ -29,7 +29,7 @@ def pio_run(
     capture_output: bool = False,
     text: bool = False
 ):
-    cmd = ("pio", *args)
+    cmd = ["pio", *args]
 
     try:
         return subprocess.run(cmd, cwd=cwd, check=True, capture_output=capture_output, text=text)
@@ -48,7 +48,7 @@ def pio_output(args: list[str], cwd: Path | None = None) -> str:
 
 def pio_json(args: list[str], cwd: Path | None = None):
     args = [*args, "--json-output"]
-    
+
     try:
         return json.loads(pio_output(args, cwd))
     except json.JSONDecodeError as e:
@@ -58,9 +58,15 @@ def pio_json(args: list[str], cwd: Path | None = None):
         ) from e
 
 def pio_load_ini(cwd: Path):
+    if not is_pio_project(cwd):
+        raise PioProjectNotFoundError(cwd)
+
     return pio_json(["project", "config"], cwd)
 
 def pio_load_envs(cwd: Path):
+    if not is_pio_project(cwd):
+        raise PioProjectNotFoundError(cwd)
+
     return [name.removeprefix("env:") for name, _ in pio_load_ini(cwd) if name.startswith("env:")]
 
 def pio_load_boards(query: str | None = None):
@@ -69,6 +75,8 @@ def pio_load_boards(query: str | None = None):
         args += [query]
     return pio_json(args)
 
+def is_pio_project(cwd: Path):
+    return (cwd / "platform.ini").exists()
 
 # Project-related methods
 def pio_project_init(
@@ -93,6 +101,9 @@ def pio_project_init(
     return (args, PioRunnable(args, cwd=cwd))
 
 def pio_compile(cwd: Path, env: str | None = None):
+    if not is_pio_project(cwd):
+        raise PioProjectNotFoundError(cwd)
+
     args = ["run"]
     if env:
         args += ["-e", env]
@@ -100,6 +111,9 @@ def pio_compile(cwd: Path, env: str | None = None):
     return pio_run(args, cwd=cwd)
 
 def pio_compiledb(cwd: Path, env: str | None = None):
+    if not is_pio_project(cwd):
+        raise PioProjectNotFoundError(cwd)
+
     args = ["run", "-t", "compiledb"]
     if env:
         args += ["-e", env]
@@ -115,6 +129,9 @@ def pio_upload(
     upload_port: str | None = None,
     monitor_port: str | None = None
 ):
+    if not is_pio_project(cwd):
+        raise PioProjectNotFoundError(cwd)
+
     args = ["run", "-t", "upload"]
 
     if env:
