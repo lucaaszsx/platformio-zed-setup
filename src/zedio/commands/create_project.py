@@ -54,7 +54,7 @@ def register(subparsers):
         "--compiledb",
         action="store_true",
         default=None,
-        help="generate a sample source file"
+        help="generate compile commands after project initialization"
     )
     parser.set_defaults(run=run)
 
