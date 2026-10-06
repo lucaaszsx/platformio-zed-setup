@@ -131,46 +131,39 @@ def run(args):
     sample_code = args.sample_code or confirm(message="Do you want to generate sample code?", default=True).execute()
     run_compiledb = args.compiledb or confirm(message="Do you want to generate compile commands after creating the project?", default=True).execute()
 
-    try:
-        logger.info("Creating the project")
-        os.makedirs(project_path, exist_ok=True)
+    logger.info("Creating the project")
+    os.makedirs(project_path, exist_ok=True)
 
-        init_cmd, runnable = pio_project_init(
-            cwd=project_path,
-            board=board["id"],
-            framework=framework,
-            monitor_speed=monitor_speed,
-            sample_code=sample_code
-        )
+    init_cmd, init_runnable = pio_project_init(
+        cwd=project_path,
+        board=board["id"],
+        framework=framework,
+        monitor_speed=monitor_speed,
+        sample_code=sample_code
+    )
 
-        logger.info("Initializing project with PlatformIO")
-        logger.info(f"  {shlex.join(init_cmd)}")
-        runnable.trigger()
+    logger.info("Initializing project with PlatformIO")
+    logger.info(f"  {shlex.join(init_cmd)}")
+    init_runnable.trigger()
 
-        logger.info(f"Copying template files to \"{project_name}\"")
+    logger.info(f"Copying template files to \"{project_name}\"")
 
-        for key in TEMPLATE_MAP:
-            src = template_src_path(key)
-            dest = template_dest_path(key, project_path)
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            dest.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+    for key in TEMPLATE_MAP:
+        src = template_src_path(key)
+        dest = template_dest_path(key, project_path)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
 
-            logger.info(f"  Created {dest.relative_to(project_path)}")
+        logger.info(f"  Created {dest.relative_to(project_path)}")
 
-        logger.success("Project successfully created")
+    logger.success("Project successfully created")
 
-        if not run_compiledb:
-            return 0
+    if not run_compiledb:
+        return 0
 
-        env = select_env(cwd=project_path, message="Which environment for compile commands generation?")
+    env = select_env(cwd=project_path, message="Which environment for compile commands generation?")
 
-        logger.info("Generating compile commands for LSP")
-        pio_compiledb(cwd=project_path, env=env)
-    except KeyboardInterrupt:
-        logger.warn("Operation aborted")
-        return 130
-    except OSError as e:
-        logger.error(f"Something went wrong: {e}")
-        return 1
+    logger.info("Generating compile commands for LSP")
+    pio_compiledb(cwd=project_path, env=env)
 
     return 0
