@@ -76,7 +76,7 @@ def pio_load_boards(query: str | None = None):
     return pio_json(args)
 
 def is_pio_project(cwd: Path):
-    return (cwd / "platform.ini").exists()
+    return (cwd / "platformio.ini").exists()
 
 # Project-related methods
 def pio_project_init(
