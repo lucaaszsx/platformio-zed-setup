@@ -2,6 +2,7 @@ import argparse
 import sys
 
 from zedio.commands import compile, create_project, generate_commands, monitor, upload
+from zedio.lib import logger
 
 
 def main():
@@ -22,7 +23,15 @@ def main():
         command.register(subparsers)
 
     args = parser.parse_args()
-    return args.run(args)
+
+    try:
+        return args.run(args)
+    except KeyboardInterrupt:
+        logger.warn("Operation aborted")
+        return 130
+    except OSError as e:
+        logger.error(f"Something went wrong: {e}")
+        return 1
 
 if __name__ == "__main__":
     sys.exit(main())
