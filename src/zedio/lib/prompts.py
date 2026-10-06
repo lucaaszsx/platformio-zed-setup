@@ -1,4 +1,3 @@
-from collections import deque
 from pathlib import Path
 
 from InquirerPy.base.control import Choice
@@ -18,10 +17,13 @@ def select_env(cwd: Path, message: str = "Which environment?"):
         default=envs[0] if envs else None,
     ).execute()
 
-def select_port(message: str, allow_none = False):
-    ports = get_ports()
-    port_choices = deque([Choice(value=port.device, name=f"{port.device} - {port.description}")] for port in ports)
-    if allow_none:
-        port_choices.appendleft([Choice(value=None, name="None - PlatformIO try to infer")])
 
-    return select(message=message, choices=list(port_choices), default=None)
+def select_port(message: str, allow_none: bool = False):
+    choices = [
+        Choice(value=port.device, name=f"{port.device} - {port.description}")
+        for port in get_ports()
+    ]
+    if allow_none:
+        choices.insert(0, Choice(value=None, name="None"))
+
+    return select(message=message, choices=choices).execute()
