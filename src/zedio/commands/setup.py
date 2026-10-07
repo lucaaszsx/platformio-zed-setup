@@ -57,7 +57,7 @@ def run(_args):
     document.value.values.append(entry)
 
     tasks_path.write_text(
-        json5.dumps(document, dumper=ModelDumper()),  # type: ignore[arg-type]
+        json5.dumps(document, dumper=ModelDumper()), # type: ignore[arg-type]
         encoding="utf-8"
     )
     logger.info(f"Task \"{TASK['label']}\" added to {tasks_path}")
