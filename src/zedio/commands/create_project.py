@@ -11,7 +11,12 @@ from InquirerPy.prompts.fuzzy import FuzzyPrompt as fuzzy
 from InquirerPy.prompts.input import InputPrompt as text
 
 from zedio.lib import logger
-from zedio.lib.pio import pio_compiledb, pio_load_boards, pio_project_init
+from zedio.lib.pio import (
+    pio_compiledb,
+    pio_load_boards,
+    pio_load_envs,
+    pio_project_init,
+)
 from zedio.lib.prompts import select_env
 from zedio.templates import PROJECT_TEMPLATES_PATH, TEMPLATE_SUFFIX
 
@@ -152,9 +157,9 @@ def run(args):
     if not run_compiledb:
         return 0
 
-    env = select_env(cwd=project_path, message="Which environment for compile commands generation?")
+    env = pio_load_envs(cwd=project_path)[0]
 
-    logger.info("Generating compile commands for LSP")
+    logger.info(f"Generating compile commands for LSP using environment {env}")
     pio_compiledb(cwd=project_path, env=env)
 
     return 0
