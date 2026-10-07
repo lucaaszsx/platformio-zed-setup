@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from zedio.commands import compile, create_project, generate_commands, monitor, upload
+from zedio.commands import compile, create_project, generate_commands, monitor, upload, setup
 from zedio.lib import logger
 from zedio.lib.errors import PioError
 
@@ -20,7 +20,7 @@ def main():
         required=True
     )
 
-    for command in (compile, create_project, generate_commands, monitor, upload):
+    for command in (compile, create_project, generate_commands, monitor, upload, setup):
         command.register(subparsers)
 
     args = parser.parse_args()
