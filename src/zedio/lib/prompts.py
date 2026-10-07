@@ -18,12 +18,16 @@ def select_env(cwd: Path, message: str = "Which environment?"):
     ).execute()
 
 
-def select_port(message: str, allow_none: bool = False):
+def select_port(message: str, allow_none: bool = False, ignore_only_none: bool = False) -> str | None:
     choices = [
         Choice(value=port.device, name=f"{port.device} - {port.description}")
         for port in get_ports()
     ]
     if allow_none:
+        if not choices and ignore_only_none:
+            return None
         choices.insert(0, Choice(value=None, name="None"))
+    elif not choices:
+        return None
 
     return select(message=message, choices=choices).execute()

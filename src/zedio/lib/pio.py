@@ -148,3 +148,15 @@ def pio_upload(
             args += ["--monitor-port", monitor_port]
 
     return (args, PioRunnable(args, cwd=cwd))
+
+def pio_monitor(port: str | None = None):
+    project_path = Path.cwd()
+
+    if not is_pio_project(project_path):
+        raise PioProjectNotFoundError(project_path)
+
+    args = ["device", "monitor"]
+    if port:
+        args += ["-p", port]
+
+    return pio_run(args=args, cwd=project_path)
