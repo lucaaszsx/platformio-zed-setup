@@ -40,7 +40,7 @@ def pio_run(
         raise PioError(
             f"'{' '.join(cmd)}' failed with exit code {e.returncode}"
             + (f": {stderr}" if stderr else "")
-        ) from e
+        ) from None
 
 def pio_output(args: list[str], cwd: Path | None = None) -> str:
     result = pio_run(args, cwd=cwd, capture_output=True, text=True)
