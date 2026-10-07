@@ -3,6 +3,7 @@ import sys
 
 from zedio.commands import compile, create_project, generate_commands, monitor, upload
 from zedio.lib import logger
+from zedio.lib.errors import PioError
 
 
 def main():
@@ -29,6 +30,9 @@ def main():
     except KeyboardInterrupt:
         logger.warn("Operation aborted")
         return 130
+    except PioError as e:
+        logger.error(str(e))
+        return 1
     except OSError as e:
         logger.error(f"Something went wrong: {e}")
         return 1
