@@ -1,6 +1,8 @@
 import os
 import re
 import shlex
+import shutil
+from importlib.resources import as_file
 from pathlib import Path
 
 from InquirerPy.base.control import Choice
@@ -11,11 +13,7 @@ from InquirerPy.prompts.input import InputPrompt as text
 from zedio.lib import logger
 from zedio.lib.pio import pio_compiledb, pio_load_boards, pio_project_init
 from zedio.lib.prompts import select_env
-from zedio.templates.template_map import (
-    TEMPLATE_MAP,
-    template_dest_path,
-    template_src_path,
-)
+from zedio.templates import PROJECT_TEMPLATES_PATH, TEMPLATE_SUFFIX
 
 
 def register(subparsers):
@@ -147,14 +145,7 @@ def run(args):
     init_runnable.trigger()
 
     logger.info(f"Copying template files to \"{project_name}\"")
-
-    for key in TEMPLATE_MAP:
-        src = template_src_path(key)
-        dest = template_dest_path(key, project_path)
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
-
-        logger.info(f"  Created {dest.relative_to(project_path)}")
+    copy_templates(project_path)
 
     logger.success("Project successfully created")
 
@@ -167,3 +158,17 @@ def run(args):
     pio_compiledb(cwd=project_path, env=env)
 
     return 0
+
+def copy_templates(dest_path: Path) -> None:
+    def copy_template_file(src: str, dst: str) -> None:
+        target = Path(dst.removesuffix(TEMPLATE_SUFFIX))
+        shutil.copy2(src, target)
+        logger.info(f"  Created {target.relative_to(dest_path)}")
+
+    with as_file(PROJECT_TEMPLATES_PATH) as source_path:
+        shutil.copytree(
+            source_path,
+            dest_path,
+            copy_function=copy_template_file,
+            dirs_exist_ok=True,
+        )

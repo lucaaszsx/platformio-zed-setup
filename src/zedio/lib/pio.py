@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 
 from zedio.lib.errors import PioError, PioProjectNotFoundError
-from zedio.templates.template_map import template_dest_path
+from zedio.templates import COMPILATIONDB_TOOLCHAIN_SCRIPT
 
 
 # Utility
@@ -90,7 +90,7 @@ def pio_project_init(
         "project", "init",
         "--board", board,
         "--project-option", f"monitor_speed={monitor_speed}",
-        "--project-option", f"extra_scripts=pre:{template_dest_path("compiledbtc", cwd)}"
+        "--project-option", f"extra_scripts=pre:{COMPILATIONDB_TOOLCHAIN_SCRIPT}"
     ]
 
     if framework:
