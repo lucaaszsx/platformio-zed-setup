@@ -1,0 +1,42 @@
+[
+    {
+        "label": "Zedio: generate compile_commands",
+        "command": "zedio",
+        "args": ["compiledb"],
+        "use_new_terminal": false,
+        "reveal": "always",
+        "hide": "never"
+    },
+    {
+        "label": "Zedio: compile project",
+        "command": "zedio",
+        "args": ["compile"],
+        "use_new_terminal": false,
+        "reveal": "always",
+        "hide": "never"
+    },
+    {
+        "label": "Zedio: upload",
+        "command": "zedio",
+        "args": ["upload"],
+        "use_new_terminal": false,
+        "reveal": "always",
+        "hide": "never"
+    },
+    {
+        "label": "Zedio: upload/monitor",
+        "command": "zedio",
+        "args": ["upload", "--use-monitor"],
+        "use_new_terminal": false,
+        "reveal": "always",
+        "hide": "never"
+    },
+    {
+        "label": "Zedio: serial monitor",
+        "command": "zedio",
+        "args": ["monitor"],
+        "use_new_terminal": false,
+        "reveal": "always",
+        "hide": "never"
+    }
+]

@@ -1,11 +1,10 @@
-# Python
-__pycache__
-*.pyc
-.venv/
-.ruff_cache/
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
 
-# Cache files
-.cache
-
-# Projects
-projects/
+# Virtual environments
+.venv
