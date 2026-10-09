@@ -12,12 +12,6 @@ Use `curl` to download the setup script and execute it with `sh`:
 $ curl -LsSf https://raw.githubusercontent.com/lucaaszsx/platformio-zed-setup/refs/heads/main/setup.sh | sh
 ```
 
-Or with `wget`, if your system doesn't have `curl`:
-
-```bash
-$ wget -qO- https://raw.githubusercontent.com/lucaaszsx/platformio-zed-setup/refs/heads/main/setup.sh | sh
-```
-
 ## Usage
 
 The setup script that you have seen in [installation](#installation) section will automatically setup Zed tasks to allow you use Zedio and create your embedded systems on your editor. However, you can also use the CLI tool directly, since its a binary executable installed into your system by **uv** during the setup step.
@@ -27,6 +21,10 @@ To get a specification of the CLI commands provided by Zedio, just run the follo
 ```bash
 zedio --help
 ```
+
+## Building
+
+To build this project into your reposiot
 
 ## Contributing
 
