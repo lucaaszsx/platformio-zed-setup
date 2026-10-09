@@ -16,7 +16,7 @@ $ curl -LsSf https://raw.githubusercontent.com/lucaaszsx/platformio-zed-setup/re
 
 The setup script that you have seen in [installation](#installation) section will automatically setup Zed tasks to allow you use Zedio and create your embedded systems on your editor. However, you can also use the CLI tool directly, since its a binary executable installed into your system by **uv** during the setup step.
 
-To get a specification of the CLI commands provided by Zedio, just run the following command:
+To get a full specification of the CLI commands provided by Zedio, just run the following command:
 
 ```bash
 zedio --help
@@ -24,7 +24,25 @@ zedio --help
 
 ## Building
 
-To build this project into your reposiot
+To build this project into your own machine, follow these steps:
+
+1. Clone the repository
+
+```bash
+$ git clone https://github.com/lucaaszsx/platformio-zed-setup
+```
+
+2. Enter the repository folder
+
+```bash
+$ cd platformio-zed-setup
+```
+
+3. Run Zedio commands with `uv` (dependencies will be auto-installed)
+
+```bash
+$ uv run zedio --help
+```
 
 ## Contributing
 
